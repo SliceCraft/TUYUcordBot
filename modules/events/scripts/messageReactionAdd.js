@@ -8,7 +8,6 @@ export default {
             if(reaction.partial) await reaction.fetch();
             if(reaction.message.partial) await reaction.message.fetch();
             if(reaction.emoji.toString() != "💀" || reaction.count < process.env.SKULLBOARD_MINIMUM_AMOUNT){
-                console.log("NO SJKUL MOEJIIIII");
                 return;
             }
 
