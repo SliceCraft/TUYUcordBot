@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import * as discord from "discord.js";
-import { REST, Routes, SlashCommandBuilder } from "discord.js";
+import {Partials, REST, Routes, SlashCommandBuilder} from "discord.js";
 import * as fs from "fs";
 
 // TODO: Stop having this globally available
@@ -13,6 +13,10 @@ global.client = new discord.Client({
         discord.GatewayIntentBits.GuildMessageReactions,
         discord.GatewayIntentBits.DirectMessages,
         discord.GatewayIntentBits.MessageContent
+    ],
+    partials: [
+        Partials.Reaction,
+        Partials.Message
     ]
 });
 
