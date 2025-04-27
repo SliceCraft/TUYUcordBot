@@ -1,0 +1,2 @@
+# TUYUcord Discord Bot
+WIP
