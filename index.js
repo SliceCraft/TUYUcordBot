@@ -33,7 +33,7 @@ client.on("ready", async () => {
     setTimeout(() => {
         // TODO: This deployment code is horrible, it does work though
         const deployGuilds = [
-            process.env.DEPLOYGUILD
+            process.env.DEPLOY_GUILD
         ];
 
         function setStandardOptions(baseoption, optiondata){
@@ -188,7 +188,7 @@ client.on("ready", async () => {
             });
             slashcollection.push(slashcommand);
         });
-        const rest = new REST({ version: '9' }).setToken(process.env.DISCORDTOKEN);
+        const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_TOKEN);
         console.log("Started refreshing slash commands");
         deployGuilds.forEach(async guild => {
             await rest.put(
@@ -200,4 +200,4 @@ client.on("ready", async () => {
     }, 5e3);
 });
 
-client.login(process.env.DISCORDTOKEN);
+client.login(process.env.DISCORD_TOKEN);
