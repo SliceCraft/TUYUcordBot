@@ -112,7 +112,21 @@ export default {
         await interaction.editReply({content: `A ticket has been opened! <#${ticket.channelid}>`});
     },
     async close(interaction){
+        await interaction.deferReply({ephemeral: true});
 
+        const ticket = ticketManager.getTicket(interaction.channel.id);
+
+        if(!ticket){
+            await interaction.editReply({content: `This is not a ticket`});
+            return;
+        }
+
+        if(ticket.userid !== interaction.user.id && !RoleChecker.isTrialOrAbove(interaction.member)){
+            await interaction.editReply({content: `You are not allowed to close this ticket`});
+            return;
+        }
+
+        await ticket.close(interaction.user, interaction.guild);
     },
     async addUser(interaction){
 
