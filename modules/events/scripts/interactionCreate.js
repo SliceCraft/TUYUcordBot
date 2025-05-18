@@ -26,13 +26,14 @@ export default {
                 }
             }else if(interaction.isButton()){
                 try{
-                    console.log("User " + interaction.user.username + "#" + interaction.user.discriminator + " clicked on a button in the command " + interaction.message.interaction.commandName ?? interaction.message.interaction.name);
                     // With subcommands there can be a command like `roles pick` this causes the get to fail
                     // To fix this I split at spaces and get the first result
-                    var commandname = (interaction.message.interaction.commandName ?? interaction.message.interaction.name).split(" ")[0];
+                    var commandname = (interaction.message.interaction == null ? interaction.customId.split('-')[0] : interaction.message.interaction.commandName ?? interaction.message.interaction.name).split(" ")[0];
+
+                    console.log("User " + interaction.user.username + "#" + interaction.user.discriminator + " clicked on a button in the command " + commandname);
                     await client.commands.get(commandname).button(interaction);
                 }catch(err){
-                    console.log("User " + interaction.user.username + "#" + interaction.user.discriminator + " clicked on a button in the comman " + interaction.message.interaction.commandName ?? interaction.message.interaction.name + " and resulted in the error: " + err);
+                    console.log("User " + interaction.user.username + "#" + interaction.user.discriminator + " clicked on a button in the comman " + commandname + " and resulted in the error: " + err);
                     console.log(err);
                     await interaction.reply({ content: "Something went wrong", ephemeral: true });
                 }

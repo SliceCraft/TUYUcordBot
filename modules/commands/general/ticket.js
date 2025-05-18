@@ -1,6 +1,11 @@
 import TicketManager from "../../../libraries/tickets/TicketManager.js";
 import RoleChecker from "../../../libraries/permissions/RoleChecker.js";
-import {PermissionsBitField} from "discord.js";
+import {
+    ActionRowBuilder as MessageActionRow,
+    ButtonBuilder as MessageButton,
+    EmbedBuilder,
+    PermissionsBitField
+} from "discord.js";
 
 var ticketManager = new TicketManager();
 
@@ -155,5 +160,59 @@ export default {
         await interaction.guild.channels.cache.get(ticket.channelid).permissionOverwrites.delete(user.id);
 
         await interaction.editReply({content: `<@${user.id}> was removed from the ticket`});
+    },
+
+    async button(interaction){
+        await interaction.deferReply({ephemeral: true});
+
+        const interactionType = interaction.customId.split('-')[1];
+
+        if (interactionType === 'start'){
+            return await this.startTicket(interaction);
+        }else if (interactionType === 'create'){
+            return await this.createTicket(interaction);
+        }else if(interactionType === 'deny'){
+            return await this.deny(interaction);
+        }
+    },
+    async startTicket(interaction){
+        const ticketType = interaction.customId.split('-')[2];
+
+        const ticketEmbed = new EmbedBuilder();
+        ticketEmbed.setColor(0x00FFFF);
+        ticketEmbed.setTitle("Are you sure!");
+        ticketEmbed.setDescription(`Are you sure you cant to create a ${ticketType} ticket?`);
+
+        const components = [];
+        components.push(new MessageButton()
+            .setCustomId(`ticket-create-${ticketType}`)
+            .setLabel("Yes")
+            .setStyle(3)
+        );
+        components.push(new MessageButton()
+            .setCustomId(`ticket-deny`)
+            .setLabel("No")
+            .setStyle(4)
+        );
+
+        const componentrows = [];
+        const row = new MessageActionRow().addComponents(components);
+        componentrows.push(row);
+
+        interaction.editReply({embeds: [ticketEmbed], components: componentrows});
+    },
+    async createTicket(interaction){
+        const ticketType = interaction.customId.split('-')[2];
+
+        const ticket = await ticketManager.createTicket(interaction.user, ticketType, interaction.guild);
+        await interaction.editReply({content: `A ticket has been opened! <#${ticket.channelid}>`});
+    },
+    async deny(interaction){
+        const ticketEmbed = new EmbedBuilder();
+        ticketEmbed.setColor(0x00FFFF);
+        ticketEmbed.setTitle("Cancelled creating a ticket!");
+        ticketEmbed.setDescription("Cancelled ticket creation. Make sure to create a ticket in the future if you do have something to talk to us about.");
+
+        interaction.editReply({embeds: [ticketEmbed]});
     }
 };
