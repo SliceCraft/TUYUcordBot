@@ -1,5 +1,6 @@
 import TicketManager from "../../../libraries/tickets/TicketManager.js";
 import RoleChecker from "../../../libraries/permissions/RoleChecker.js";
+import {PermissionsBitField} from "discord.js";
 
 var ticketManager = new TicketManager();
 
@@ -54,13 +55,6 @@ export default {
                     description: 'The user you want to add',
                     type: 'USER',
                     required: true
-                },
-                {
-                    name: 'ticket',
-                    description: 'The ticket you want to add the user to',
-                    type: 'CHANNEL',
-                    channel_types: ["GUILD_TEXT"],
-                    required: false
                 }
             ]
         },
@@ -74,13 +68,6 @@ export default {
                     description: 'The user you want to remove',
                     type: 'USER',
                     required: true
-                },
-                {
-                    name: 'ticket',
-                    description: 'The ticket you want to remove the user from',
-                    type: 'CHANNEL',
-                    channel_types: ["GUILD_TEXT"],
-                    required: false
                 }
             ]
         }
@@ -129,9 +116,46 @@ export default {
         await ticket.close(interaction.user, interaction.guild);
     },
     async addUser(interaction){
+        await interaction.deferReply({ephemeral: true});
 
+        const ticket = ticketManager.getTicket(interaction.channel.id);
+
+        if(!ticket){
+            await interaction.editReply({content: `This is not a ticket`});
+            return;
+        }
+
+        if(ticket.userid !== interaction.user.id && !RoleChecker.isTrialOrAbove(interaction.member)){
+            await interaction.editReply({content: `You are not allowed to add users to this ticket`});
+            return;
+        }
+
+        const user = interaction.options.getUser('user');
+        await interaction.guild.channels.cache.get(ticket.channelid).permissionOverwrites.edit(user.id, {
+            'ViewChannel': true,
+            'SendMessages': true
+        });
+
+        await interaction.editReply({content: `<@${user.id}> was added to the ticket`});
     },
     async removeUser(interaction){
+        await interaction.deferReply({ephemeral: true});
 
+        const ticket = ticketManager.getTicket(interaction.channel.id);
+
+        if(!ticket){
+            await interaction.editReply({content: `This is not a ticket`});
+            return;
+        }
+
+        if(ticket.userid !== interaction.user.id && !RoleChecker.isTrialOrAbove(interaction.member)){
+            await interaction.editReply({content: `You are not allowed to remove users from this ticket`});
+            return;
+        }
+
+        const user = interaction.options.getUser('user');
+        await interaction.guild.channels.cache.get(ticket.channelid).permissionOverwrites.delete(user.id);
+
+        await interaction.editReply({content: `<@${user.id}> was removed from the ticket`});
     }
 };
