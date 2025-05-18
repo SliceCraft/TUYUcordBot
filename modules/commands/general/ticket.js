@@ -86,8 +86,6 @@ export default {
     async new(interaction){
         await interaction.deferReply({ephemeral: true});
 
-        // TODO: Add ticket cleanup
-
         const user = (
             interaction.options.getUser("user") &&
             RoleChecker.isTrialOrAbove(interaction.member)

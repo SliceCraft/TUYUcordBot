@@ -3,6 +3,7 @@ import * as discord from "discord.js";
 import {Partials, REST, Routes, SlashCommandBuilder} from "discord.js";
 import * as fs from "fs";
 
+// TODO: Schedule a check that cleans up the tickets folder
 // TODO: Stop having this globally available
 global.client = new discord.Client({
     intents: [
