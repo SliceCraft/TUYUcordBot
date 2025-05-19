@@ -60,6 +60,8 @@ class Ticket {
         fs.mkdirSync(`./data/tickets/archive/${this.channelid}`);
         fs.renameSync(`./data/tickets/${this.channelid}/logs.txt`, `./data/tickets/archive/${this.channelid}/logs.txt`);
         fs.renameSync(`./data/tickets/${this.channelid}/stafflogs.txt`, `./data/tickets/archive/${this.channelid}/stafflogs.txt`);
+        fs.renameSync(`./data/tickets/${this.channelid}/ticket.json`, `./data/tickets/archive/${this.channelid}/ticket.json`);
+        fs.rmdirSync(`./data/tickets/${this.channelid}`);
 
         await guild.channels.cache.get(process.env.SERVER_MODERATION_CHANNEL).send({content: `Ticket for <@${this.userid}> was closed`, files: [`./data/tickets/archive/${this.channelid}/logs.txt`, `./data/tickets/archive/${this.channelid}/stafflogs.txt`]}).catch(() => {});
         await guild.members.cache.get(this.userid).send({content: `Your ticket was closed, see the attached file for a log of the ticket!`, files: [`./data/tickets/archive/${this.channelid}/logs.txt`]}).catch(() => {});
