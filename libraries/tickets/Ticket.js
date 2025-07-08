@@ -47,7 +47,7 @@ class Ticket {
 
         const guild = client.guilds.cache.get(process.env.DEPLOY_GUILD);
         const channel = guild.channels.cache.get(this.channelid) ?? await guild.channels.fetch(this.channelid);
-        await channel.send({embeds: [ticketOpenedEmbed]})
+        await channel.send({embeds: [ticketOpenedEmbed], content: `<@${this.userid}>`})
     }
 
     async close(closer, guild){
