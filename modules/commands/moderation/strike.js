@@ -59,7 +59,7 @@ async function createTempStrikeChannel(user, strike, strikeUser){
 
 export default {
     "name": "strike",
-    "category": "general",
+    "category": "moderation",
     "description": "Give a member a strike",
     "options": [
         {
