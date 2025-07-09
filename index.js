@@ -2,6 +2,7 @@ import 'dotenv/config';
 import * as discord from "discord.js";
 import {Partials, REST, Routes, SlashCommandBuilder} from "discord.js";
 import * as fs from "fs";
+import StrikeChannelAnnouncementManager from "./libraries/strikes/StrikeChannelAnnouncementManager.js";
 
 // TODO: Schedule a check that cleans up the tickets folder
 // TODO: Stop having this globally available
@@ -30,8 +31,10 @@ fs.readdirSync("./modules/").forEach(async folder => {
 
 client.on("ready", async () => {
     client.user.setPresence({ activities: [{ name: "Listening to banger TUYU songs", type: discord.ActivityType.Custom }], status: 'online'});
-    setInterval(() => {
-        client.user.setPresence({ activities: [{ name: "Listening to banger TUYU songs", type: discord.ActivityType.Custom }], status: 'online'});
+    setInterval(async () => {
+        await client.user.setPresence({ activities: [{ name: "Listening to banger TUYU songs", type: discord.ActivityType.Custom }], status: 'online'});
+
+        await StrikeChannelAnnouncementManager.cleanUp()
     }, 600e3);
 
     // Using a timeout to prevent potential problems when the modules haven't been fully oladed yet
