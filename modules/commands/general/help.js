@@ -7,6 +7,7 @@ export default {
     async execute(interaction){
         let description = [
             `:speech_balloon: General`,
+            `:tools: Moderation`,
             `:exclamation: All commands`
         ];
         let help = new EmbedBuilder();
@@ -22,6 +23,10 @@ export default {
     					label: "General",
 					    value: 'general_help',
 				    },
+                    {
+                        label: "Moderation",
+                        value: 'moderation_help',
+                    },
                     {
     					label: "All commands",
 					    value: 'all_commands_help',
