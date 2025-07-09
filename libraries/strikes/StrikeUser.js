@@ -2,6 +2,8 @@ import fs from "fs";
 import Strike from "./Strike.js";
 
 class StrikeUser {
+    #strikes;
+
     constructor(userid, userdata) {
         this.userid = userid;
         this.#strikes = [];
@@ -14,13 +16,23 @@ class StrikeUser {
     }
 
     static getUser(userid) {
-        let userData = JSON.parse(fs.getFileSync(`./data/strikes/${userid}.json`));
-        if(!userData) userData = {};
-        return new Strike(userData);
+        let userData;
+
+        if (fs.existsSync(`./data/strikes/${userid}.json`)) {
+            userData = JSON.parse(fs.readFileSync(`./data/strikes/${userid}.json`));
+        } else {
+            userData = {};
+        }
+
+        return new StrikeUser(userid, userData);
     }
 
     addStrike(reason, punisher){
-        this.#strikes.push(new Strike(Date.now(), reason, punisher));
+        let strike = new Strike(Date.now(), reason, punisher);
+
+        this.#strikes.push(strike);
+
+        return strike;
     }
 
     save(){
