@@ -3,6 +3,7 @@ import Strike from "./Strike.js";
 
 class StrikeUser {
     #strikes;
+    #bannedAt;
     /**
      * @type {number} The delta between each strike expire
      */
@@ -11,6 +12,7 @@ class StrikeUser {
     constructor(userid, userdata) {
         this.userid = userid;
         this.#strikes = [];
+        this.#bannedAt = userdata.bannedAt ?? null;
 
         if(userdata.strikes) {
             for(let strike of userdata.strikes) {
@@ -41,7 +43,8 @@ class StrikeUser {
 
     save(){
         fs.writeFileSync(`./data/strikes/${this.userid}.json`, JSON.stringify({
-            strikes: this.#strikes
+            strikes: this.#strikes,
+            bannedAt: this.#bannedAt,
         }));
     }
 
@@ -77,12 +80,24 @@ class StrikeUser {
         return sortedStrikes;
     }
 
+    ban(){
+        this.#bannedAt = Date.now();
+    }
+
+    unban(){
+        this.#bannedAt = null;
+    }
+
     getStrikeCount(){
         return this.#strikes.length;
     }
 
     getActiveStrikeCount(){
         return this.getActiveStrikes().filter(strike => strike.active).length;
+    }
+
+    getBannedAt(){
+        return this.#bannedAt;
     }
 }
 

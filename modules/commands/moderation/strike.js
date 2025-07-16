@@ -84,13 +84,19 @@ export default {
         let strikeUser = StrikeUser.getUser(user.id);
 
         let strike = strikeUser.addStrike(reason, interaction.user.id);
-        strikeUser.save();
 
         let dmSucceeded = await sendDmToMember(user, strike, strikeUser);
 
         if (!dmSucceeded) {
             await createTempStrikeChannel(user, strike, strikeUser);
         }
+
+        if (strikeUser.getActiveStrikeCount() >= 3 && strikeUser.getBannedAt() === null) {
+            strikeUser.ban();
+            let member = interaction.guild.members.cache.get(user.id);
+            await member.roles.add(process.env.BAN_ROLE);
+        }
+        strikeUser.save();
 
         await interaction.editReply({content: 'Strike added successfully'});
     }

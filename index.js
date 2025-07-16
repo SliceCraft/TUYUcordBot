@@ -3,6 +3,7 @@ import * as discord from "discord.js";
 import {Partials, REST, Routes, SlashCommandBuilder} from "discord.js";
 import * as fs from "fs";
 import StrikeChannelAnnouncementManager from "./libraries/strikes/StrikeChannelAnnouncementManager.js";
+import BanChecker from "./libraries/strikes/BanChecker.js";
 
 // TODO: Schedule a check that cleans up the tickets folder
 // TODO: Stop having this globally available
@@ -206,6 +207,8 @@ client.on("ready", async () => {
         });
         console.log("Finished refreshing slash commands");
     }, 5e3);
+
+    await BanChecker.onStartup();
 });
 
 client.login(process.env.DISCORD_TOKEN);
