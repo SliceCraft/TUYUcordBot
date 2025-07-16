@@ -1,4 +1,5 @@
 import StrikeUser from "../../../libraries/strikes/StrikeUser.js";
+import RoleChecker from "../../../libraries/permissions/RoleChecker.js";
 
 export default {
     "name": "unban",
@@ -13,6 +14,11 @@ export default {
         }
     ],
     async execute(interaction){
+        if (!RoleChecker.isTrialOrAbove(interaction.member)) {
+            await interaction.reply({content: "You are not allowed to execute this command!", ephemeral: true})
+            return;
+        }
+
         await interaction.deferReply({ephemeral: true});
 
         let user = interaction.options.getUser('user');

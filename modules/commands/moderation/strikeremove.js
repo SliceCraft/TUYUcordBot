@@ -1,5 +1,6 @@
 import StrikeUser from "../../../libraries/strikes/StrikeUser.js";
 import strikeUser from "../../../libraries/strikes/StrikeUser.js";
+import RoleChecker from "../../../libraries/permissions/RoleChecker.js";
 
 export default {
     "name": "strikeremove",
@@ -21,6 +22,11 @@ export default {
         }
     ],
     async execute(interaction){
+        if (!RoleChecker.isTrialOrAbove(interaction.member)) {
+            await interaction.reply({content: "You are not allowed to execute this command!", ephemeral: true})
+            return;
+        }
+
         await interaction.deferReply({ephemeral: true});
 
         let user = interaction.options.getUser('user');
@@ -37,6 +43,12 @@ export default {
         }
     },
     async autocomplete(interaction){
+        if (!RoleChecker.isTrialOrAbove(interaction.member)) {
+            // Since the user isn't allowed to run this command they shouldn't get any strikes
+            await interaction.respond([]);
+            return;
+        }
+
         // This is a bad way to get the user value but for some reason `interaction.options.getUser('user')`
         // returns null instead of a user.
         let userid = interaction.options._hoistedOptions[0].value;

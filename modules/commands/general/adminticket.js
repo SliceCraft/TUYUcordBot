@@ -1,10 +1,16 @@
 import {ActionRowBuilder as MessageActionRow, ButtonBuilder as MessageButton, EmbedBuilder} from "discord.js";
+import RoleChecker from "../../../libraries/permissions/RoleChecker.js";
 
 export default {
     "name": "adminticket",
     "category": "general",
     "description": "Post ticket embed, admin only",
     async execute(interaction){
+        if (!RoleChecker.isAdmin(interaction.member)) {
+            await interaction.reply({content: "You are not allowed to execute this command!", ephemeral: true})
+            return;
+        }
+
         await interaction.deferReply({ephemeral: true});
 
         const ticketEmbed = new EmbedBuilder();
