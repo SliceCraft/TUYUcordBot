@@ -12,7 +12,7 @@ class RoleChecker{
     }
 
     static isAdmin(member){
-        return member.roles.cache.has(process.env.ADMIN_ROLE) || member.roles.cache.has(process.env.SERVER_TECHNICIAN_ROLE);
+        return member.roles.cache.has(process.env.ADMIN_ROLE) || member.roles.cache.has(process.env.SERVER_TECHNICIAN_ROLE) || member.roles.cache.has(process.env.HEAD_ADMIN_ROLE);
     }
 }
 

@@ -49,7 +49,7 @@ class TicketManager {
             autoArchiveDuration: 10080,
             type: threadType
         });
-        await thread.send({content: `<@&${process.env.ADMIN_ROLE}> <@&${process.env.MOD_ROLE}> <@&${process.env.TRIAL_ROLE}> <@&${process.env.SERVER_TECHNICIAN_ROLE}> This thread was made to privately discuss this ticket.`});
+        await thread.send({content: `<@&${process.env.HEAD_ADMIN_ROLE}> <@&${process.env.ADMIN_ROLE}> <@&${process.env.MOD_ROLE}> <@&${process.env.TRIAL_ROLE}> <@&${process.env.SERVER_TECHNICIAN_ROLE}> This thread was made to privately discuss this ticket.`});
 
         const ticket = new Ticket({
             'userid': user.id,
