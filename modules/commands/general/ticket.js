@@ -29,7 +29,7 @@ export default {
                         },{
                             name: "Become an affiliate", value: "affiliate"
                         },{
-                            name: 'Appeal (NOT FULLY IMPLEMENTED)', value: 'appeal'
+                            name: 'Appeal', value: 'appeal'
                         },{
                             name: "Other/general", value: "general"
                         }

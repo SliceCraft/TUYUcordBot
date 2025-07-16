@@ -25,7 +25,7 @@ export default {
         );
         components.push(new MessageButton()
             .setCustomId(`ticket-start-appeal`)
-            .setLabel("Appeal (NOT IMPLEMENTED)")
+            .setLabel("Appeal")
             .setStyle(1)
         );
         components.push(new MessageButton()
