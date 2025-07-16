@@ -8,7 +8,7 @@ class RoleChecker{
     static isModOrAbove(member){
         if(this.isAdmin(member)) return true;
 
-        return member.roles.cache.has(process.env.MOD_ROLE_ROLES);
+        return member.roles.cache.has(process.env.MOD_ROLE);
     }
 
     static isAdmin(member){
