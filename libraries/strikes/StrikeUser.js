@@ -42,6 +42,16 @@ class StrikeUser {
         return strike;
     }
 
+    disableStrike(uuid){
+        for(let strike of this.#strikes){
+            if(strike.uuid === uuid) {
+                strike.disabled = true;
+                return true;
+            }
+        }
+        return false;
+    }
+
     save(){
         fs.writeFileSync(`./data/strikes/${this.userid}.json`, JSON.stringify({
             strikes: this.#strikes,
