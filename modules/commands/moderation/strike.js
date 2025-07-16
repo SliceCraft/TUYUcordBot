@@ -1,6 +1,7 @@
 import StrikeUser from "../../../libraries/strikes/StrikeUser.js";
 import {EmbedBuilder} from "discord.js";
 import StrikeChannelAnnouncementManager from "../../../libraries/strikes/StrikeChannelAnnouncementManager.js";
+import RoleChecker from "../../../libraries/permissions/RoleChecker.js";
 
 /**
  * Create an embed for the member about the strike they received
@@ -76,6 +77,11 @@ export default {
         }
     ],
     async execute(interaction){
+        if (!RoleChecker.isTrialOrAbove(interaction.member)) {
+            await interaction.reply({content: "You are not allowed to execute this command!", ephemeral: true})
+            return;
+        }
+
         await interaction.deferReply({ephemeral: true});
 
         let user = interaction.options.getUser('user');
