@@ -1,5 +1,6 @@
 import fs from "fs";
 import Strike from "./Strike.js";
+import {randomUUID} from "crypto";
 
 class StrikeUser {
     #strikes;
@@ -16,7 +17,7 @@ class StrikeUser {
 
         if(userdata.strikes) {
             for(let strike of userdata.strikes) {
-                this.#strikes.push(new Strike(strike.createdAt, strike.reason, strike.punisher));
+                this.#strikes.push(new Strike(strike.uuid, strike.createdAt, strike.reason, strike.punisher, strike.disabled));
             }
         }
     }
@@ -34,7 +35,7 @@ class StrikeUser {
     }
 
     addStrike(reason, punisher){
-        let strike = new Strike(Date.now(), reason, punisher);
+        let strike = new Strike(randomUUID(), Date.now(), reason, punisher, false);
 
         this.#strikes.push(strike);
 
@@ -48,8 +49,12 @@ class StrikeUser {
         }));
     }
 
+    getNonDisabledStrikes(){
+        return this.#strikes.filter(strike => !strike.disabled);
+    }
+
     getActiveStrikes(){
-        let sortedStrikes = this.#strikes.sort((a,b) => a.createdAt - b.createdAt);
+        let sortedStrikes = this.getNonDisabledStrikes().sort((a,b) => a.createdAt - b.createdAt);
 
         let strikesForgiven = 0;
 
@@ -89,7 +94,7 @@ class StrikeUser {
     }
 
     getStrikeCount(){
-        return this.#strikes.length;
+        return this.getNonDisabledStrikes().length;
     }
 
     getActiveStrikeCount(){

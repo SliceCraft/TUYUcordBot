@@ -1,8 +1,10 @@
 class Strike {
-    constructor(createdAt, reason, punisher) {
+    constructor(uuid, createdAt, reason, punisher, disabled) {
+        this.uuid = uuid;
         this.createdAt = createdAt;
         this.reason = reason;
         this.punisher = punisher;
+        this.disabled = disabled;
     }
 }
 
