@@ -7,8 +7,10 @@ class SkullBoard {
             return;
         }
 
-        var skullEmojis = this.getSkullEmojiFile();
-        var message = reaction.message;
+        let message = reaction.message;
+        if (message.author.id === client.user.id) return;
+
+        let skullEmojis = this.getSkullEmojiFile();
 
         // If the message was already posted on the skull board then we don't need to post it again
         if(skullEmojis[message.id]) return;
