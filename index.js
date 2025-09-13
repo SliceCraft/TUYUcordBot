@@ -30,7 +30,7 @@ fs.readdirSync("./modules/").forEach(async folder => {
     moduleFile.run();
 });
 
-client.on("ready", async () => {
+client.on("clientReady", async () => {
     client.user.setPresence({ activities: [{ name: "Listening to banger TUYU songs", type: discord.ActivityType.Custom }], status: 'online'});
     setInterval(async () => {
         await client.user.setPresence({ activities: [{ name: "Listening to banger TUYU songs", type: discord.ActivityType.Custom }], status: 'online'});
