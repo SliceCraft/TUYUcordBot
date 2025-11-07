@@ -181,7 +181,7 @@ export default {
         const ticketEmbed = new EmbedBuilder();
         ticketEmbed.setColor(0x00FFFF);
         ticketEmbed.setTitle("Are you sure!");
-        ticketEmbed.setDescription(`Are you sure you cant to create a ${ticketType} ticket?`);
+        ticketEmbed.setDescription(`Are you sure you want to create a ${ticketType} ticket?`);
 
         const components = [];
         components.push(new MessageButton()
