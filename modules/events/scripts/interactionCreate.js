@@ -1,3 +1,5 @@
+import MassBan from "../../../libraries/massban/MassBan.js";
+
 export default {
     name: 'interactionCreate',
     async execute(){
@@ -26,6 +28,9 @@ export default {
                 }
             }else if(interaction.isButton()){
                 try{
+                    // Is this hacky? Yes, yes it is.
+                    if (interaction.customId.startsWith('massban')) return await MassBan.modalSubmit(interaction);
+
                     // With subcommands there can be a command like `roles pick` this causes the get to fail
                     // To fix this I split at spaces and get the first result
                     var commandname = (interaction.message.interaction == null ? interaction.customId.split('-')[0] : interaction.message.interaction.commandName ?? interaction.message.interaction.name).split(" ")[0];
