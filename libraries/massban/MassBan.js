@@ -26,7 +26,7 @@ class MassBan {
                 .setStyle(ButtonStyle.Danger)
         ]);
 
-        serverModerationChannel.send({content: `<@&${process.env.MOD_ROLE}> <@&${process.env.ADMIN_ROLE}>`, components: [buttonRow], embeds: [confirmationEmbed]})
+        serverModerationChannel.send({content: `<@&${process.env.MOD_ROLE}> <@&${process.env.ADMIN_ROLE}> <@&${process.env.HEAD_ADMIN_ROLE}>`, components: [buttonRow], embeds: [confirmationEmbed]})
     }
 
     static async modalSubmit(interaction)
